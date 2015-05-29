@@ -67,3 +67,21 @@ function table:min(comp)
             if a < b then return a
             else return b end end )
 end
+
+function using(namespace, env)
+    env = env or _ENV
+    if not getmetatable(env) then setmetatable(env, {}) end
+    local mt = getmetatable(env)
+
+    if not mt.__mixins then
+        mt.__mixins = {}
+
+        mt.__index = function(_, key)
+            for _, module in ipairs(mt.__mixins) do
+                if module[key] then return module[key] end
+            end
+        end
+    end
+
+    table.insert(mt.__mixins, namespace)
+end

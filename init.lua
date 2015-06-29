@@ -2,8 +2,14 @@ package.path = package.path .. ";" .. os.getenv("HOME") .. "/.lua/?.lua"
 package.cpath = package.cpath .. ";" .. os.getenv("HOME") .. "/.lua/?.so"
 inspect = require 'inspect'
 class = require 'middleclass'
-lpeg = require 'lpeg'
-re = require 're'
+
+-- Try for lpeg, load it if it's present
+local f = io.open(os.getenv("HOME") .. '/.lua/lpeg.so', 'r')
+if f then
+    f:close()
+    lpeg = require 'lpeg'
+    re = require 're'
+end
 
 -- Some table utilities
 setmetatable(table,
